@@ -88,7 +88,7 @@ export const spec = {
           cpm: bid.price,
           netRevenue: true,
           currency: bid.currency || 'USD',
-          ttl: bid.ttl || spec.time,
+          ttl: 5,
           format: bid.format
         }
         bidResponses.push(bidResponse)

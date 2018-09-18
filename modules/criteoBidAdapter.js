@@ -92,7 +92,7 @@ export const spec = {
           cpm: slot.cpm,
           currency: slot.currency,
           netRevenue: true,
-          ttl: slot.ttl || 60,
+          ttl: 5,
           creativeId: bidId,
           width: slot.width,
           height: slot.height,

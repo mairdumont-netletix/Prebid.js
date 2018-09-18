@@ -231,7 +231,7 @@ function newBid(serverBid, rtbBid, bidderRequest) {
     dealId: rtbBid.deal_id,
     currency: 'USD',
     netRevenue: true,
-    ttl: 300,
+    ttl: 5,
     appnexus: {
       buyerMemberId: rtbBid.buyer_member_id
     }
