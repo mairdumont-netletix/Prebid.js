@@ -83,7 +83,7 @@ export const spec = {
           width: primarysize[0],
           height: primarysize[1],
           creativeId: '' + matchedBid.id,
-          dealId: matchedBid.pid,
+          dealId: (matchedBid['c.dealid']) ? matchedBid['c.dealid'] : matchedBid.pid,
           currency: CURRENCY_CODE,
           netRevenue: false,
           ttl: BID_RESPONSE_TTL_SEC,
