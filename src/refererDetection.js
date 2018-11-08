@@ -27,7 +27,6 @@ export function detectReferer(win) {
   function getPubUrlStack(levels) {
     let stack = [];
     let defUrl = null;
-    let encodedUrl = null;
     let frameLocation = null;
     let prevFrame = null;
     let prevRef = null;
@@ -43,10 +42,9 @@ export function detectReferer(win) {
       }
 
       if (frameLocation) {
-        encodedUrl = encodeURIComponent(frameLocation);
-        stack.push(encodedUrl);
+        stack.push(frameLocation);
         if (!detectedRefererUrl) {
-          detectedRefererUrl = encodedUrl;
+          detectedRefererUrl = frameLocation;
         }
       } else if (i !== 0) {
         prevFrame = levels[i - 1];
@@ -58,16 +56,14 @@ export function detectReferer(win) {
         }
 
         if (prevRef) {
-          encodedUrl = encodeURIComponent(prevRef);
-          stack.push(encodedUrl);
+          stack.push(prevRef);
           if (!detectedRefererUrl) {
-            detectedRefererUrl = encodedUrl;
+            detectedRefererUrl = prevRef;
           }
         } else if (ancestor) {
-          encodedUrl = encodeURIComponent(ancestor);
-          stack.push(encodedUrl);
+          stack.push(ancestor);
           if (!detectedRefererUrl) {
-            detectedRefererUrl = encodedUrl;
+            detectedRefererUrl = ancestor;
           }
         } else {
           stack.push(defUrl);
@@ -82,6 +78,17 @@ export function detectReferer(win) {
     };
   }
 
+  function getCanonicalUrl(doc) {
+    try {
+      let element = doc.querySelector("link[rel='canonical']");
+      if (element !== null) {
+        return element.href;
+      }
+    } catch (e) {
+    }
+    return null;
+  }
+
   function walkUpWindows() {
     let acc = [];
     let currentWindow;
@@ -89,11 +96,18 @@ export function detectReferer(win) {
       try {
         currentWindow = currentWindow ? currentWindow.parent : win;
         try {
-          acc.push({
+          let isTop = (currentWindow == win.top);
+          let refData = {
             referrer: currentWindow.document.referrer || null,
             location: currentWindow.location.href || null,
-            isTop: (currentWindow == win.top)
-          });
+            isTop
+          }
+          if (isTop) {
+            refData = Object.assign(refData, {
+              canonicalUrl: getCanonicalUrl(currentWindow.document)
+            })
+          }
+          acc.push(refData);
         } catch (e) {
           acc.push({
             referrer: null,
@@ -134,12 +148,17 @@ export function detectReferer(win) {
       let reachedTop = (levels[numIframes].location !== null ||
         (numIframes > 0 && levels[numIframes - 1].referrer !== null));
       let stackInfo = getPubUrlStack(levels);
+      let canonicalUrl;
+      if (levels[levels.length - 1].canonicalUrl) {
+        canonicalUrl = levels[levels.length - 1].canonicalUrl;
+      }
 
       return {
         referer: stackInfo.detectedRefererUrl,
         reachedTop,
         numIframes,
         stack: stackInfo.stack,
+        canonicalUrl
       };
     } catch (e) {
       // Ignore error

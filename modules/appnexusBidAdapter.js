@@ -109,10 +109,10 @@ export const spec = {
 
     if (bidderRequest && bidderRequest.refererInfo) {
       let refererinfo = {
-        rd_ref: bidderRequest.refererInfo.referer,
+        rd_ref: encodeURIComponent(bidderRequest.refererInfo.referer),
         rd_top: bidderRequest.refererInfo.reachedTop,
         rd_ifs: bidderRequest.refererInfo.numIframes,
-        rd_stk: bidderRequest.refererInfo.stack.join(',')
+        rd_stk: bidderRequest.refererInfo.stack.map((url) => encodeURIComponent(url)).join(',')
       }
       payload.referrer_detection = refererinfo;
     }
@@ -178,6 +178,10 @@ export const spec = {
       params.use_pmt_rule = (typeof params.usePaymentRule === 'boolean') ? params.usePaymentRule : false;
       if (params.usePaymentRule) { delete params.usePaymentRule; }
 
+      if (isPopulatedArray(params.keywords)) {
+        params.keywords.forEach(deleteValues);
+      }
+
       Object.keys(params).forEach(paramKey => {
         let convertedKey = utils.convertCamelToUnderscore(paramKey);
         if (convertedKey !== paramKey) {
@@ -188,6 +192,16 @@ export const spec = {
     }
 
     return params;
+  }
+}
+
+function isPopulatedArray(arr) {
+  return !!(utils.isArray(arr) && arr.length > 0);
+}
+
+function deleteValues(keyPairObj) {
+  if (isPopulatedArray(keyPairObj.value) && keyPairObj.value[0] === '') {
+    delete keyPairObj.value;
   }
 }
 
@@ -233,7 +247,9 @@ function newBid(serverBid, rtbBid, bidderRequest) {
     netRevenue: true,
     ttl: 5,
     appnexus: {
-      buyerMemberId: rtbBid.buyer_member_id
+      buyerMemberId: rtbBid.buyer_member_id,
+      dealPriority: rtbBid.deal_priority,
+      dealCode: rtbBid.deal_code
     }
   };
 
@@ -343,7 +359,12 @@ function bidToTag(bid) {
     tag.external_imp_id = bid.params.externalImpId;
   }
   if (!utils.isEmpty(bid.params.keywords)) {
-    tag.keywords = utils.transformBidderParamKeywords(bid.params.keywords);
+    let keywords = utils.transformBidderParamKeywords(bid.params.keywords);
+
+    if (keywords.length > 0) {
+      keywords.forEach(deleteValues);
+    }
+    tag.keywords = keywords;
   }
 
   if (bid.mediaType === NATIVE || utils.deepAccess(bid, `mediaTypes.${NATIVE}`)) {
