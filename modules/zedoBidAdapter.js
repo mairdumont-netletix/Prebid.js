@@ -1,9 +1,9 @@
-import * as utils from 'src/utils';
-import { registerBidder } from 'src/adapters/bidderFactory';
-import { BANNER, VIDEO } from 'src/mediaTypes';
+import * as utils from '../src/utils';
+import { registerBidder } from '../src/adapters/bidderFactory';
+import { BANNER, VIDEO } from '../src/mediaTypes';
 import find from 'core-js/library/fn/array/find';
-import { Renderer } from 'src/Renderer';
-import * as url from 'src/url';
+import { Renderer } from '../src/Renderer';
+import * as url from '../src/url';
 
 const BIDDER_CODE = 'zedo';
 const URL = '//z2.zedo.com/asw/fmh.json';
@@ -256,7 +256,12 @@ function getRenderer(adUnitCode, rendererId, rendererUrl, rendererOptions = {}) 
 function videoRenderer(bid) {
   // push to render queue
   bid.renderer.push(() => {
-    var rndr = new ZdPBTag(bid.adUnitCode, bid.network, bid.width, bid.height, bid.adType, bid.vastXml);
+    let channelCode = utils.deepAccess(bid, 'params.0.channelCode') || 0;
+    let dimId = utils.deepAccess(bid, 'params.0.dimId') || 0;
+    let options = utils.deepAccess(bid, 'params.0.options') || {};
+    let channel = (channelCode > 0) ? (channelCode - (bid.network * 1000000)) : 0;
+    var rndr = new ZdPBTag(bid.adUnitCode, bid.network, bid.width, bid.height, bid.adType, bid.vastXml, channel, dimId,
+      (encodeURI(utils.getTopWindowUrl()) || ''), options);
     rndr.renderAd();
   });
 }
