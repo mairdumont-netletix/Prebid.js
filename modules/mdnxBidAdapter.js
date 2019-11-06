@@ -8,7 +8,7 @@ const flatten = (previosValue, currentValue) => previosValue.concat(currentValue
 const getFirstBidRequestParam = (bidRequests, name) => bidRequests.find(bidRequest => bidRequest.params && bidRequest.params[name]);
 
 const buildOpenRTBBidRequest = (bidRequests, bidderRequest) => {
-  const { gdprApplies, consentString: consent } = bidderRequest.gdprConsent;
+  const { gdprApplies, consentString: consent } = bidderRequest.gdprConsent || {};
   const { referer: url, reachedTop } = bidderRequest.refererInfo;
   const bidRequest2ImpsMapper = (bidRequest) => bidRequest.mediaTypes.banner.sizes.map(([w, h]) => ({
     id: bidRequest.bidId,
