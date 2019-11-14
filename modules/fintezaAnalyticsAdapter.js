@@ -9,7 +9,8 @@ const CONSTANTS = require('../src/constants.json');
 const ANALYTICS_TYPE = 'endpoint';
 const FINTEZA_HOST = 'https://content.mql5.com/tr';
 const BID_REQUEST_TRACK = 'Bid Request %BIDDER%';
-const BID_RESPONSE_TRACK = 'Bid Response %BIDDER%';
+const BID_RESPONSE_PRICE_TRACK = 'Bid Response Price %BIDDER%';
+const BID_RESPONSE_TIME_TRACK = 'Bid Response Time %BIDDER%';
 const BID_TIMEOUT_TRACK = 'Bid Timeout %BIDDER%';
 const BID_WON_TRACK = 'Bid Won %BIDDER%';
 
@@ -18,6 +19,7 @@ const SESSION_ID = '_fz_ssn';
 const SESSION_DURATION = 30 * 60 * 1000;
 const SESSION_RAND_PART = 9;
 const TRACK_TIME_KEY = '_fz_tr';
+const UNIQ_ID_KEY = '_fz_uniq';
 
 function getPageInfo() {
   const pageInfo = {
@@ -29,6 +31,42 @@ function getPageInfo() {
   }
 
   return pageInfo;
+}
+
+function getUniqId() {
+  let cookies;
+
+  try {
+    cookies = parseCookies(document.cookie);
+  } catch (a) {
+    cookies = {};
+  }
+
+  let isUniqFromLS;
+  let uniq = cookies[ UNIQ_ID_KEY ];
+  if (!uniq) {
+    try {
+      if (window.localStorage) {
+        uniq = window.localStorage.getItem(UNIQ_ID_KEY) || '';
+        isUniqFromLS = true;
+      }
+    } catch (b) {}
+  }
+
+  if (uniq && isNaN(uniq)) {
+    uniq = null;
+  }
+
+  if (uniq && isUniqFromLS) {
+    let expires = new Date();
+    expires.setFullYear(expires.getFullYear() + 10);
+
+    try {
+      document.cookie = UNIQ_ID_KEY + '=' + uniq + '; path=/; expires=' + expires.toUTCString();
+    } catch (e) {}
+  }
+
+  return uniq;
 }
 
 function initFirstVisit() {
@@ -265,19 +303,21 @@ function prepareBidRequestedParams(args) {
 
 function prepareBidResponseParams(args) {
   return [{
-    event: encodeURIComponent(replaceBidder(fntzAnalyticsAdapter.context.bidResponseTrack, args.bidderCode)),
-    c1_value: args.timeToRespond,
-    c1_unit: 'ms',
-    c2_value: args.cpm,
-    c2_unit: 'usd',
+    event: encodeURIComponent(replaceBidder(fntzAnalyticsAdapter.context.bidResponsePriceTrack, args.bidderCode)),
+    value: args.cpm,
+    unit: 'usd'
+  }, {
+    event: encodeURIComponent(replaceBidder(fntzAnalyticsAdapter.context.bidResponseTimeTrack, args.bidderCode)),
+    value: args.timeToRespond,
+    unit: 'ms'
   }];
 }
 
 function prepareBidWonParams(args) {
   return [{
     event: encodeURIComponent(replaceBidder(fntzAnalyticsAdapter.context.bidWonTrack, args.bidderCode)),
-    c1_value: args.cpm,
-    c1_unit: 'usd',
+    value: args.cpm,
+    unit: 'usd'
   }];
 }
 
@@ -285,8 +325,8 @@ function prepareBidTimeoutParams(args) {
   return args.map(function(bid) {
     return {
       event: encodeURIComponent(replaceBidder(fntzAnalyticsAdapter.context.bidTimeoutTrack, bid.bidder)),
-      c1_value: bid.timeout,
-      c1_unit: 'ms',
+      value: bid.timeout,
+      unit: 'ms'
     };
   })
 }
@@ -327,6 +367,10 @@ function prepareTrackData(evtype, args) {
       ac: getAntiCacheParam(),
     })
 
+    if (fntzAnalyticsAdapter.context.uniqId) {
+      trackData.fz_uniq = fntzAnalyticsAdapter.context.uniqId;
+    }
+
     if (session.id) {
       trackData.ssn = session.id;
     }
@@ -344,12 +388,12 @@ function sendTrackRequest(trackData) {
   try {
     ajax(
       fntzAnalyticsAdapter.context.host,
-      null, // Callback
+      null,
       trackData,
       {
         method: 'GET',
-        contentType: 'application/x-www-form-urlencoded',
-        // preflight: true,
+        withCredentials: true,
+        contentType: 'application/x-www-form-urlencoded'
       },
     );
     saveTrackRequestTime();
@@ -387,11 +431,13 @@ fntzAnalyticsAdapter.enableAnalytics = function (config) {
     host: config.options.host || FINTEZA_HOST,
     id: config.options.id,
     bidRequestTrack: config.options.bidRequestTrack || BID_REQUEST_TRACK,
-    bidResponseTrack: config.options.bidResponseTrack || BID_RESPONSE_TRACK,
+    bidResponsePriceTrack: config.options.bidResponsePriceTrack || BID_RESPONSE_PRICE_TRACK,
+    bidResponseTimeTrack: config.options.bidResponseTimeTrack || BID_RESPONSE_TIME_TRACK,
     bidTimeoutTrack: config.options.bidTimeoutTrack || BID_TIMEOUT_TRACK,
     bidWonTrack: config.options.bidWonTrack || BID_WON_TRACK,
     firstVisit: initFirstVisit(),
     screenResolution: `${window.screen.width}x${window.screen.height}`,
+    uniqId: getUniqId(),
     pageInfo: getPageInfo(),
   };
 
