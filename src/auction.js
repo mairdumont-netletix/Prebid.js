@@ -699,13 +699,15 @@ export function adjustBids(bid) {
     const bidAdjustment = lookupFunction('bidAdjustment');
     if (bidAdjustment) {
       try {
-        bid = bidAdjustment(Object.assign({}, bid)) || bid;
+        bidAdjustment(bid);
+        // const bidAdjusted = bidAdjustment(Object.assign({}, bid)) || bid;
+        // bid.cpm = bidAdjusted.cpm;
+        // bid.renderer = bidAdjusted.renderer;
       } catch (e) {
         utils.logError('Error during bid adjustment', 'bidmanager.js', e);
       }
     }
   }
-  return bid;
 }
 
 /**
