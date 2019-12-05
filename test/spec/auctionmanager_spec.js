@@ -637,13 +637,15 @@ describe('auctionmanager.js', function () {
       };
 
       // match
-      const bidTest1 = adjustBids(Object.assign({}, bid, {
+      const bidTest1 = Object.assign({}, bid, {
         dealId: 'specialDeal',
-      }))
+      });
+      adjustBids(bidTest1);
       assert.equal(bidTest1.renderer, 'specialDealRenderer');
 
       // no-match
-      const bidTest2 = adjustBids(Object.assign({}, bid));
+      const bidTest2 = Object.assign({}, bid);
+      adjustBids(bidTest2);
       assert.equal(bidTest2.renderer, undefined);
 
       // reset bidderSettings so we don't mess up further tests

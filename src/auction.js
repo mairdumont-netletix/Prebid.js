@@ -708,9 +708,6 @@ export function adjustBids(bid) {
     if (bidAdjustment) {
       try {
         bidAdjustment(bid);
-        // const bidAdjusted = bidAdjustment(Object.assign({}, bid)) || bid;
-        // bid.cpm = bidAdjusted.cpm;
-        // bid.renderer = bidAdjusted.renderer;
       } catch (e) {
         utils.logError('Error during bid adjustment', 'bidmanager.js', e);
       }
