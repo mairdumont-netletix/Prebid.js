@@ -777,7 +777,7 @@ describe('IndexexchangeAdapter', function () {
           mediaType: 'banner',
           ad: '<a target="_blank" href="http://www.indexexchange.com"></a>',
           currency: 'USD',
-          ttl: 35,
+          ttl: 5,
           netRevenue: true,
           dealId: undefined,
           meta: {
@@ -804,7 +804,7 @@ describe('IndexexchangeAdapter', function () {
           mediaType: 'banner',
           ad: '<a target="_blank" href="http://www.indexexchange.com"></a>',
           currency: 'USD',
-          ttl: 35,
+          ttl: 5,
           netRevenue: true,
           dealId: undefined,
           meta: {
@@ -830,7 +830,7 @@ describe('IndexexchangeAdapter', function () {
           mediaType: 'banner',
           ad: '<a target="_blank" href="http://www.indexexchange.com"></a>',
           currency: 'JPY',
-          ttl: 35,
+          ttl: 5,
           netRevenue: true,
           dealId: undefined,
           meta: {
@@ -857,7 +857,7 @@ describe('IndexexchangeAdapter', function () {
           mediaType: 'banner',
           ad: '<a target="_blank" href="http://www.indexexchange.com"></a>',
           currency: 'USD',
-          ttl: 35,
+          ttl: 5,
           netRevenue: true,
           dealId: 'deal',
           meta: {

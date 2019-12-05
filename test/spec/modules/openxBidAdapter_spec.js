@@ -1351,7 +1351,7 @@ describe('OpenxAdapter', function () {
       });
 
       it('should have a time-to-live of 5 minutes', function () {
-        expect(bid.ttl).to.equal(300);
+        expect(bid.ttl).to.equal(5);
       });
 
       it('should always return net revenue', function () {
@@ -1621,7 +1621,7 @@ describe('OpenxAdapter', function () {
           'mediaType': 'video',
           'creativeId': '5678',
           'vastUrl': 'https://testvast.com',
-          'ttl': 300,
+          'ttl': 5,
           'netRevenue': true,
           'currency': 'USD'
         }
@@ -1641,7 +1641,7 @@ describe('OpenxAdapter', function () {
           'mediaType': 'video',
           'creativeId': '5678',
           'vastUrl': 'https://testvast.com',
-          'ttl': 300,
+          'ttl': 5,
           'netRevenue': true,
           'currency': 'USD'
         }

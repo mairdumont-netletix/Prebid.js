@@ -402,7 +402,7 @@ describe('nanointeractive adapter tests', function () {
               width: WIDTH1,
               height: HEIGHT1,
               ad: AD,
-              ttl: 360,
+              ttl: 5,
               creativeId: 'TEST_ID',
               netRevenue: false,
               currency: 'EUR',
@@ -414,7 +414,7 @@ describe('nanointeractive adapter tests', function () {
               width: WIDTH1,
               height: HEIGHT1,
               ad: AD,
-              ttl: 360,
+              ttl: 5,
               creativeId: 'TEST_ID',
               netRevenue: false,
               currency: 'EUR',
@@ -433,7 +433,7 @@ describe('nanointeractive adapter tests', function () {
               width: WIDTH1,
               height: HEIGHT1,
               ad: AD,
-              ttl: 360,
+              ttl: 5,
               creativeId: 'TEST_ID',
               netRevenue: false,
               currency: 'EUR',
@@ -445,7 +445,7 @@ describe('nanointeractive adapter tests', function () {
               width: WIDTH1,
               height: HEIGHT1,
               ad: AD,
-              ttl: 360,
+              ttl: 5,
               creativeId: 'TEST_ID',
               netRevenue: false,
               currency: 'EUR',
@@ -457,7 +457,7 @@ describe('nanointeractive adapter tests', function () {
         expect(bid.width).to.equal(WIDTH1);
         expect(bid.height).to.equal(HEIGHT1);
         expect(bid.ad).to.equal(AD);
-        expect(bid.ttl).to.equal(360);
+        expect(bid.ttl).to.equal(5);
         expect(bid.creativeId).to.equal('TEST_ID');
         expect(bid.currency).to.equal('EUR');
       });

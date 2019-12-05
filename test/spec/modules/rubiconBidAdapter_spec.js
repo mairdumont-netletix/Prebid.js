@@ -1759,7 +1759,7 @@ describe('the rubicon adapter', function () {
           expect(bids[0].width).to.equal(320);
           expect(bids[0].height).to.equal(50);
           expect(bids[0].cpm).to.equal(0.911);
-          expect(bids[0].ttl).to.equal(300);
+          expect(bids[0].ttl).to.equal(5);
           expect(bids[0].netRevenue).to.equal(false);
           expect(bids[0].rubicon.advertiserId).to.equal(7);
           expect(bids[0].rubicon.networkId).to.equal(8);
@@ -1774,7 +1774,7 @@ describe('the rubicon adapter', function () {
           expect(bids[1].width).to.equal(300);
           expect(bids[1].height).to.equal(250);
           expect(bids[1].cpm).to.equal(0.811);
-          expect(bids[1].ttl).to.equal(300);
+          expect(bids[1].ttl).to.equal(5);
           expect(bids[1].netRevenue).to.equal(false);
           expect(bids[1].rubicon.advertiserId).to.equal(7);
           expect(bids[1].rubicon.networkId).to.equal(8);
