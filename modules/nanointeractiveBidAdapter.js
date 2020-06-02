@@ -108,7 +108,7 @@ function createSingleBidResponse(serverBid) {
     width: serverBid.width,
     height: serverBid.height,
     ad: serverBid.ad,
-    ttl: 5,
+    ttl: serverBid.ttl,
     creativeId: serverBid.creativeId,
     netRevenue: serverBid.netRevenue || true,
     currency: serverBid.currency

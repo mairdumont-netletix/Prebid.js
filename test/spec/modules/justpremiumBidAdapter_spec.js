@@ -120,7 +120,7 @@ describe('justpremium adapter', function () {
           cpm: 0.52,
           netRevenue: true,
           currency: 'USD',
-          ttl: 5,
+          ttl: 60000,
           format: 'lb'
         }
       ]
@@ -134,7 +134,7 @@ describe('justpremium adapter', function () {
       expect(result[0].ad).to.equal('creative code')
       expect(result[0].cpm).to.equal(0.52)
       expect(result[0].currency).to.equal('USD')
-      expect(result[0].ttl).to.equal(5)
+      expect(result[0].ttl).to.equal(60000)
       expect(result[0].creativeId).to.equal(3213123)
       expect(result[0].netRevenue).to.equal(true)
       expect(result[0].format).to.equal('lb')

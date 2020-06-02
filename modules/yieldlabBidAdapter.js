@@ -6,7 +6,7 @@ import { Renderer } from '../src/Renderer.js'
 
 const ENDPOINT = 'https://ad.yieldlab.net'
 const BIDDER_CODE = 'yieldlab'
-const BID_RESPONSE_TTL_SEC = 5
+const BID_RESPONSE_TTL_SEC = 300
 const CURRENCY_CODE = 'EUR'
 const OUTSTREAMPLAYER_URL = 'https://ad2.movad.net/dynamic.ad?a=o193092&ma_loadEvent=ma-start-event'
 

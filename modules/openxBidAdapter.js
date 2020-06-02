@@ -129,7 +129,7 @@ function createBannerBidResponses(oxResponseObj, {bids, startTime}) {
       bidResponse.dealId = adUnit.deal_id;
     }
     // default 5 mins
-    bidResponse.ttl = 5;
+    bidResponse.ttl = 300;
     // true is net, false is gross
     bidResponse.netRevenue = true;
     bidResponse.currency = adUnit.currency;

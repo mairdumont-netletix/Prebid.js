@@ -1335,7 +1335,7 @@ describe('OpenxAdapter', function () {
       });
 
       it('should have a time-to-live of 5 minutes', function () {
-        expect(bid.ttl).to.equal(5);
+        expect(bid.ttl).to.equal(300);
       });
 
       it('should always return net revenue', function () {
@@ -1624,7 +1624,7 @@ describe('OpenxAdapter', function () {
           'mediaType': 'video',
           'creativeId': '5678',
           'vastUrl': 'https://testvast.com',
-          'ttl': 5,
+          'ttl': 300,
           'netRevenue': true,
           'currency': 'USD'
         }

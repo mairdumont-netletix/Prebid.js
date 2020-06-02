@@ -654,7 +654,7 @@ describe('Improve Digital Adapter Tests', function () {
         'mediaType': 'banner',
         'netRevenue': false,
         'requestId': '33e9500b21129f',
-        'ttl': 5,
+        'ttl': 300,
         'width': 600
       }
     ];
@@ -671,7 +671,7 @@ describe('Improve Digital Adapter Tests', function () {
         'mediaType': 'banner',
         'netRevenue': true,
         'requestId': '1234',
-        'ttl': 5,
+        'ttl': 300,
         'width': 700
       }
     ];
@@ -686,7 +686,7 @@ describe('Improve Digital Adapter Tests', function () {
         height: 290,
         netRevenue: false,
         requestId: '33e9500b21129f',
-        ttl: 5,
+        ttl: 300,
         width: 600,
         native: {
           title: 'Native title',
@@ -736,7 +736,7 @@ describe('Improve Digital Adapter Tests', function () {
         'mediaType': 'video',
         'netRevenue': false,
         'requestId': '33e9500b21129f',
-        'ttl': 5,
+        'ttl': 300,
         'width': 600
       }
     ];
