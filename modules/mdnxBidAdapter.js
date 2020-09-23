@@ -1,6 +1,6 @@
-import { registerBidder } from '../src/adapters/bidderFactory';
-import { ajax } from '../src/ajax';
-import { BANNER } from '../src/mediaTypes';
+import { registerBidder } from '../src/adapters/bidderFactory.js';
+import { ajax } from '../src/ajax.js';
+import { BANNER } from '../src/mediaTypes.js';
 
 const ADAPTER_VERSION = 1;
 
