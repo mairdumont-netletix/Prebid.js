@@ -417,7 +417,7 @@ function exitModule(errMsg, hookConfig, extraArgs) {
     let nextFn = hookConfig.nextFn;
 
     if (errMsg) {
-      if (allowAuction.value && cmpVersion === 1) {
+      if (allowAuction.value && (cmpVersion === 1 || cmpVersion === 0)) {
         utils.logWarn(errMsg + ` 'allowAuctionWithoutConsent' activated.`, extraArgs);
         nextFn.apply(context, args);
       } else {
